@@ -9,11 +9,16 @@ Games:
  - TicTacToe
 
 MP3-Files:
-001 - select game
-002 - play again?
-011 - Simon
-012 - Lights Out
-013 - Tic Tac Toe
+001: select game
+002: play again?
+003: level
+004: points
+
+011: Simon
+012: Lights Out
+013: Tic Tac Toe
+
+100-200: "0" - "100" 
  
 Updates:
 
@@ -40,6 +45,9 @@ Updates:
 0.6 (18.6.2014):
 - TicTacToe: show winner
 - small changes
+
+0.6.1 (10.8.2014):
+- some speech-output added
 
 
 */
@@ -314,6 +322,8 @@ void playSimon() {
 
 void selectDiffSimon() {  // Auswahl der Schwierigkeitsstufe (4 oder 8 Tasten)
   
+  trigger.trigger(3);   // Sprachausgabe: "Wähle die Schwierigkeit"
+
   do {
     clearField();
     field[4] = -2;        // mittleres Feld weiss - Bestätigung der Auswahl
@@ -381,7 +391,9 @@ void getSimonSequence(int sequence[]) {
     showField();
 
     if (key != sequence[i]) {
-      fertig = 1;    
+      fertig = 1;   
+      trigger.trigger(4);        // Sprachausgabe: "erreichte Punkte"
+      trigger.trigger(level+100);   // Sprachausgabe: Punkestand (Level)
       playVictory();
       return;
     }
@@ -720,6 +732,8 @@ void colorSet(int Feld) {
 // nocheinmal spielen?
 boolean playAgain() {
   
+  trigger.trigger(2);   // Sprachausgabe: "nocheinmal spielen?"  
+
   clearField();
   field[0] = 0;
   field[8] = 96;
